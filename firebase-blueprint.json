@@ -1,0 +1,626 @@
+{
+  "entities": {
+    "UserAccount": {
+      "title": "UserAccount",
+      "description": "Private authenticated student profile, preferences, and daily study streak record.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the student owner.",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified Google account email address.",
+          "maxLength": 254
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Student full name.",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "preferredName": {
+          "type": "string",
+          "description": "Preferred display name.",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "avatarId": {
+          "type": "string",
+          "description": "Selected avatar identifier.",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "gradeLevel": {
+          "type": "string",
+          "description": "Ghana Education Service SHS grade level.",
+          "enum": ["SHS1", "SHS2", "SHS3"]
+        },
+        "targetYear": {
+          "type": "integer",
+          "description": "Target WASSCE examination year."
+        },
+        "schoolName": {
+          "type": "string",
+          "description": "Optional Senior High School name.",
+          "maxLength": 120
+        },
+        "subjects": {
+          "type": "array",
+          "description": "Selected GES elective and core subject IDs (max 9)."
+        },
+        "dailyQuestionGoal": {
+          "type": "integer",
+          "description": "Daily practice question target."
+        },
+        "streakCurrent": {
+          "type": "integer",
+          "description": "Current consecutive active study days."
+        },
+        "streakLongest": {
+          "type": "integer",
+          "description": "Longest consecutive active study days."
+        },
+        "streakLastActiveDate": {
+          "type": "string",
+          "description": "Last active YYYY-MM-DD date string.",
+          "maxLength": 10,
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "questionsSolvedToday": {
+          "type": "integer",
+          "description": "Questions solved on the latest active date."
+        },
+        "totalStudyMinutes": {
+          "type": "integer",
+          "description": "Cumulative logged study minutes."
+        },
+        "reminderEnabled": {
+          "type": "boolean",
+          "description": "Whether daily personalized streak reminders are enabled."
+        },
+        "reminderTime": {
+          "type": "string",
+          "description": "Preferred daily reminder cutoff time in HH:mm 24-hour local format.",
+          "minLength": 5,
+          "maxLength": 5,
+          "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+        },
+        "browserNotificationsEnabled": {
+          "type": "boolean",
+          "description": "Whether Web Notification alerts are enabled alongside in-app reminders."
+        },
+        "lastReminderDate": {
+          "type": "string",
+          "description": "Last YYYY-MM-DD date a daily reminder was delivered, or empty string.",
+          "maxLength": 10,
+          "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$"
+        },
+        "accentTheme": {
+          "type": "string",
+          "description": "Preferred studio accent palette.",
+          "enum": ["cyan", "emerald", "amber", "violet"]
+        },
+        "density": {
+          "type": "string",
+          "description": "Preferred workspace layout density.",
+          "enum": ["comfortable", "compact"]
+        },
+        "studioTagline": {
+          "type": "string",
+          "description": "Optional custom student motto or tagline.",
+          "maxLength": 60
+        },
+        "teacherPersona": {
+          "type": "string",
+          "description": "Selected Human AI Teacher presenter ID.",
+          "enum": ["kofi", "abena", "efua"]
+        },
+        "orbCorner": {
+          "type": "string",
+          "description": "Preferred screen corner dock for the floating Workings Orb.",
+          "enum": ["top-left", "top-right", "bottom-left", "bottom-right"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server last update timestamp."
+        }
+      },
+      "required": [
+        "uid",
+        "email",
+        "fullName",
+        "preferredName",
+        "avatarId",
+        "gradeLevel",
+        "targetYear",
+        "schoolName",
+        "subjects",
+        "dailyQuestionGoal",
+        "streakCurrent",
+        "streakLongest",
+        "streakLastActiveDate",
+        "questionsSolvedToday",
+        "totalStudyMinutes",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserStudyNote": {
+      "title": "UserStudyNote",
+      "description": "Student Markdown and KaTeX revision note synchronized to Firestore.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Note document identifier.",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "description": "UID of the note owner.",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "description": "Note title.",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "subject": {
+          "type": "string",
+          "description": "GES subject identifier.",
+          "enum": [
+            "physics",
+            "chemistry",
+            "biology",
+            "addmaths",
+            "ict",
+            "coremath",
+            "english",
+            "integratedscience",
+            "socialstudies"
+          ]
+        },
+        "grade": {
+          "type": "string",
+          "description": "GES grade level.",
+          "enum": ["SHS1", "SHS2", "SHS3"]
+        },
+        "tags": {
+          "type": "array",
+          "description": "Bounded list of up to 12 study tags."
+        },
+        "content": {
+          "type": "string",
+          "description": "Markdown and LaTeX note body.",
+          "maxLength": 45000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server update timestamp."
+        }
+      },
+      "required": [
+        "id",
+        "ownerId",
+        "title",
+        "subject",
+        "grade",
+        "tags",
+        "content",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserExamAttempt": {
+      "title": "UserExamAttempt",
+      "description": "Completed Paper 1 MCQ or Paper 2 Theory WASSCE assessment summary.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Attempt identifier.",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "description": "UID of the student owner.",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when assessment completed.",
+          "maxLength": 40
+        },
+        "subject": {
+          "type": "string",
+          "enum": [
+            "physics",
+            "chemistry",
+            "biology",
+            "addmaths",
+            "ict",
+            "coremath",
+            "english",
+            "integratedscience",
+            "socialstudies"
+          ]
+        },
+        "gradeFilter": {
+          "type": "string",
+          "enum": ["SHS1", "SHS2", "SHS3", "ALL"]
+        },
+        "paperType": {
+          "type": "string",
+          "enum": ["mcq", "theory"]
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["exam", "study"]
+        },
+        "topicTitles": {
+          "type": "array",
+          "description": "Up to 10 covered syllabus topic titles."
+        },
+        "totalQuestions": {
+          "type": "integer"
+        },
+        "score": {
+          "type": "number"
+        },
+        "maxScore": {
+          "type": "number"
+        },
+        "percentage": {
+          "type": "integer"
+        },
+        "durationSeconds": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "ownerId",
+        "timestamp",
+        "subject",
+        "gradeFilter",
+        "paperType",
+        "mode",
+        "topicTitles",
+        "totalQuestions",
+        "score",
+        "maxScore",
+        "percentage",
+        "durationSeconds",
+        "createdAt"
+      ]
+    },
+    "UserMistake": {
+      "title": "UserMistake",
+      "description": "Tracked missed Paper 1 MCQ question in the student Mistake Bank.",
+      "type": "object",
+      "properties": {
+        "questionId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subject": {
+          "type": "string",
+          "enum": [
+            "physics",
+            "chemistry",
+            "biology",
+            "addmaths",
+            "ict",
+            "coremath",
+            "english",
+            "integratedscience",
+            "socialstudies"
+          ]
+        },
+        "grade": {
+          "type": "string",
+          "enum": ["SHS1", "SHS2", "SHS3"]
+        },
+        "topicId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "wrongCount": {
+          "type": "integer"
+        },
+        "lastMissedAt": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "mastered": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "questionId",
+        "ownerId",
+        "subject",
+        "grade",
+        "topicId",
+        "wrongCount",
+        "lastMissedAt",
+        "mastered",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserFlashcardProgress": {
+      "title": "UserFlashcardProgress",
+      "description": "SM-2 spaced-repetition state for a syllabus flashcard.",
+      "type": "object",
+      "properties": {
+        "cardId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_:-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "repetitions": {
+          "type": "integer"
+        },
+        "intervalDays": {
+          "type": "integer"
+        },
+        "easeFactor": {
+          "type": "number"
+        },
+        "nextReviewAt": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "lastRating": {
+          "type": "string",
+          "enum": ["again", "hard", "good", "easy"]
+        },
+        "lastReviewedAt": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "cardId",
+        "ownerId",
+        "repetitions",
+        "intervalDays",
+        "easeFactor",
+        "nextReviewAt",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserCompetitionMatch": {
+      "title": "UserCompetitionMatch",
+      "description": "Completed AI Arena competition match record between student and AI rival.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "maxLength": 40
+        },
+        "subject": {
+          "type": "string",
+          "enum": [
+            "physics",
+            "chemistry",
+            "biology",
+            "addmaths",
+            "ict",
+            "coremath",
+            "english",
+            "integratedscience",
+            "socialstudies"
+          ]
+        },
+        "gradeFilter": {
+          "type": "string",
+          "enum": ["SHS1", "SHS2", "SHS3", "ALL"]
+        },
+        "aiOpponentId": {
+          "type": "string",
+          "maxLength": 40,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "aiOpponentName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "studentScore": {
+          "type": "integer"
+        },
+        "aiScore": {
+          "type": "integer"
+        },
+        "totalQuestions": {
+          "type": "integer"
+        },
+        "correctCount": {
+          "type": "integer"
+        },
+        "accuracyPct": {
+          "type": "integer"
+        },
+        "durationSeconds": {
+          "type": "integer"
+        },
+        "won": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "ownerId",
+        "timestamp",
+        "subject",
+        "gradeFilter",
+        "aiOpponentId",
+        "aiOpponentName",
+        "studentScore",
+        "aiScore",
+        "totalQuestions",
+        "correctCount",
+        "accuracyPct",
+        "durationSeconds",
+        "won",
+        "createdAt"
+      ]
+    },
+    "UserSimulationRun": {
+      "title": "UserSimulationRun",
+      "description": "Logged virtual laboratory or 3D video simulation interaction.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "experimentId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "grade": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 32
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "ownerId",
+        "experimentId",
+        "grade",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserAccount"
+      },
+      "description": "Private student account document (contains PII email, profile, personalization preferences, and study streak), readable and writable only by the verified owner."
+    },
+    "/users/{userId}/notes/{noteId}": {
+      "schema": {
+        "$ref": "#/entities/UserStudyNote"
+      },
+      "description": "Owner-scoped personal study notes subcollection."
+    },
+    "/users/{userId}/attempts/{attemptId}": {
+      "schema": {
+        "$ref": "#/entities/UserExamAttempt"
+      },
+      "description": "Owner-scoped completed WASSCE exam and quiz attempt summaries."
+    },
+    "/users/{userId}/mistakes/{questionId}": {
+      "schema": {
+        "$ref": "#/entities/UserMistake"
+      },
+      "description": "Owner-scoped Mistake Bank entries."
+    },
+    "/users/{userId}/flashcards/{cardId}": {
+      "schema": {
+        "$ref": "#/entities/UserFlashcardProgress"
+      },
+      "description": "Owner-scoped spaced-repetition flashcard progress records."
+    },
+    "/users/{userId}/competitions/{matchId}": {
+      "schema": {
+        "$ref": "#/entities/UserCompetitionMatch"
+      },
+      "description": "Owner-scoped immutable AI Competitions Arena match records."
+    },
+    "/users/{userId}/simulations/{runId}": {
+      "schema": {
+        "$ref": "#/entities/UserSimulationRun"
+      },
+      "description": "Owner-scoped virtual practical and 3D simulation activity logs."
+    }
+  }
+}

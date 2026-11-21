@@ -1,0 +1,6 @@
+{
+  "name": "WASSCE Science & ICT Masterclass",
+  "description": "Comprehensive Ghana Education Service (GES) SHS 1–3 WASSCE preparation platform for Physics, Chemistry, Biology, Elective Mathematics, and ICT with Paper 1–3 exam simulation, interactive labs, KaTeX study notes, and analytics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
